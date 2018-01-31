@@ -550,6 +550,10 @@ public final class XposedBridge {
 		public Object[] getSnapshot() {
 			return elements;
 		}
+
+		public synchronized void clear() {
+			elements = EMPTY_ARRAY;
+		}
 	}
 
 	private static class AdditionalHookInfo {

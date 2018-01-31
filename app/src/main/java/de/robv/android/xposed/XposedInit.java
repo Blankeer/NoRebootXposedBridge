@@ -106,6 +106,13 @@ import static de.robv.android.xposed.XposedHelpers.setStaticObjectField;
 		findAndHookMethod(ActivityThread.class, "handleBindApplication", "android.app.ActivityThread.AppBindData", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				XposedBridge.log("start reload modules");
+				// clear all callback
+				XposedBridge.sLoadedPackageCallbacks.clear();
+				// reload all modules
+				loadModules();
+				XposedBridge.log("finish reload modules");
+
 				ActivityThread activityThread = (ActivityThread) param.thisObject;
 				ApplicationInfo appInfo = (ApplicationInfo) getObjectField(param.args[0], "appInfo");
 				String reportedPackageName = appInfo.packageName.equals("android") ? "system" : appInfo.packageName;
